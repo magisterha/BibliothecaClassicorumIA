@@ -1,0 +1,154 @@
+{
+  "metadata": {
+    "titulo": "Zhengming (正名)",
+    "autor": "Xunzi (荀子)",
+    "capitulo": 22,
+    "descripcion": "Tratado completo sobre la rectificación de los nombres.",
+    "fuente_texto": "Chinese Text Project / Standard Edition",
+    "idioma_origen": "Chino Clásico (文言文)"
+  },
+  "corpus": [
+    {
+      "id": 1,
+      "texto_original": "後王之成名：刑名從商，爵名從周，文名從禮，散名之加於萬物者，則從諸夏之成俗曲期，遠方異俗之鄉，則因之而為通。",
+      "traduccion": null,
+      "notas": "Sobre el origen de los nombres penales, títulos y rituales."
+    },
+    {
+      "id": 2,
+      "texto_original": "散名之在人者：生之所以然者謂之性；性之和所生，精合感應，不事而自然謂之性。性之好、惡、喜、怒、哀、樂謂之情。",
+      "traduccion": null,
+      "notas": "Definición de Naturaleza (Xing) y Emociones (Qing)."
+    },
+    {
+      "id": 3,
+      "texto_original": "情然而心為之擇謂之慮。心慮而能為之動謂之偽；慮積焉，能習焉，而後成謂之偽。正利而為謂之事，正義而為謂之行。",
+      "traduccion": null,
+      "notas": "Definición de Reflexión (Lü) y Artificio/Acción (Wei)."
+    },
+    {
+      "id": 4,
+      "texto_original": "所以知之在人者謂之知；知有所合謂之智。所以能之在人者謂之能；能有所合謂之能。性傷謂之病，節遇謂之命。",
+      "traduccion": null,
+      "notas": "Definiciones de Conocimiento, Habilidad, Enfermedad y Destino."
+    },
+    {
+      "id": 5,
+      "texto_original": "是散名之在人者也，是後王之成名也。故王者之制名，名定而實辨，道行而志通，則慎率民而一焉。故析辭擅作名，以亂正名，使民疑惑，人多辨訟，則謂之大姦；其罪猶為符節、度量之罪也。",
+      "traduccion": null,
+      "notas": "El propósito del Rey al establecer nombres y el crimen de crear confusión."
+    },
+    {
+      "id": 6,
+      "texto_original": "故其民莫敢託為奇辭以亂正名，故民愨；民愨則易使，易使則功。民莫敢託為奇辭以亂正名，故民一於道法，而謹於守令矣。",
+      "traduccion": null,
+      "notas": "Consecuencias sociales de la rectificación: obediencia y unidad."
+    },
+    {
+      "id": 7,
+      "texto_original": "今聖王沒，名守慢，奇辭起，名實亂，是非之形不明，則雖守法之吏，誦數之儒，亦皆亂也。若有王者起，必將有循於舊名，有作於新名。",
+      "traduccion": null,
+      "notas": "El estado actual de caos tras la desaparición de los reyes sabios."
+    },
+    {
+      "id": 8,
+      "texto_original": "然則所為有名，與所緣以同異，與制名之樞要，不可不察也。異形離心交喻，異物名實玄紐，貴賤不明，同異不別；如是，則志必不通，事必不成。故知者為之分別制名以指實，上以明貴賤，下以辨同異。",
+      "traduccion": null,
+      "notas": "La necesidad de investigar el propósito y origen de los nombres."
+    },
+    {
+      "id": 9,
+      "texto_original": "貴賤明，同異別，如是，則志無不通，事無不成，是所為有名也。然則何緣而以同異？曰：緣天官。凡同類同情者，其天官之意物也同；故比方之疑似而通，是所以共其約名以相期也。",
+      "traduccion": null,
+      "notas": "El papel de los órganos sensoriales (Tianguan) en la percepción de similitudes."
+    },
+    {
+      "id": 10,
+      "texto_original": "形體、色、理，以目異；聲音清濁、調竽奇聲，以耳異；甘、苦、鹹、淡、辛、酸、奇味，以口異；香、臭、芬、鬱、腥、列、奇臭，以鼻異；疾、養、滄、熱、滑、鈹、輕、重，以形體異；說、故、喜、怒、哀、樂、愛、惡、欲，以心異。",
+      "traduccion": null,
+      "notas": "Enumeración de las percepciones sensoriales y mentales."
+    },
+    {
+      "id": 11,
+      "texto_original": "心有徵知。徵知，則緣耳而知聲可也，緣目而知形可也。然而徵知必將待天官之當簿其類，然後可也。五官簿之而不知，心徵之而無說，則人莫不然謂之不知。此所緣而以同異也。",
+      "traduccion": null,
+      "notas": "La mente (Xin) verifica lo que los sentidos registran."
+    },
+    {
+      "id": 12,
+      "texto_original": "然後隨而命之：同則同之，異則異之；單足以喻則單，單不足以喻則兼；單與兼無所相避則共；雖共，不為害矣。知異實者之異名也，故使異實者莫不異名也，不可亂也，猶使同實者莫不同名也。",
+      "traduccion": null,
+      "notas": "Reglas para asignar nombres simples (Dan) o compuestos (Jian)."
+    },
+    {
+      "id": 13,
+      "texto_original": "故萬物雖眾，有時而欲徧舉之，故謂之物。物也者，大共名也。推而共之，共則有共，至於無共然後止。有時而欲偏舉之，故謂之鳥獸。鳥獸也者，大別名也。推而別之，別則有別，至於無別然後止。",
+      "traduccion": null,
+      "notas": "Clasificación lógica: Nombres Generales (Gongming) y Específicos (Bieming)."
+    },
+    {
+      "id": 14,
+      "texto_original": "名無固宜，約之以命，約定俗成謂之宜，異於約則謂之不宜。名無固實，約之以命實，約定俗成謂之實名。名有固善，徑易而不拂，謂之善名。",
+      "traduccion": null,
+      "notas": "Convencionalismo: los nombres no son intrínsecamente correctos, dependen del acuerdo."
+    },
+    {
+      "id": 15,
+      "texto_original": "物有同狀而異所者，有異狀而同所者，可別也。狀同而為異所者，雖可合，謂之二體。狀變而實無別而為異者，謂之化；有化而無別，謂之一實。此事之所以稽實定數也。此制名之樞要也。",
+      "traduccion": null,
+      "notas": "Distinción entre forma (Zhuang) y realidad sustancial (Shi)."
+    },
+    {
+      "id": 16,
+      "texto_original": "「見侮不辱」，「聖人不愛己」，「殺盜非殺人」，此惑於用名以亂名者也。驗之所為有名，而觀其孰行，則能禁之矣。「山淵平」，「情欲寡」，「芻豢不加甘，大鐘不加樂」，此惑於用實以亂名者也。",
+      "traduccion": null,
+      "notas": "Las falacias lógicas (parte 1 y 2): usar nombres para confundir nombres/realidad."
+    },
+    {
+      "id": 17,
+      "texto_original": "驗之所緣以同異，而觀其孰調，則能禁之矣。「非而謁楹」，「有牛馬非馬」也，此惑於用名以亂實者也。驗之名約，以其所受，悖其所辭，則能禁之矣。",
+      "traduccion": null,
+      "notas": "Las falacias lógicas (parte 3): usar nombres para confundir la realidad (Paradojas lógicas)."
+    },
+    {
+      "id": 18,
+      "texto_original": "凡邪說在 court，離正名而擅作者，皆是三惑也。故明君知其分而不與辨也。夫民易一以道，而不可與共故。故明君臨之以勢，道之以道，申之以命，章之以論，禁之以刑。故其民之化道也如神。",
+      "traduccion": null,
+      "notas": "Cómo el gobernante debe tratar las tres falacias (Huo)."
+    },
+    {
+      "id": 19,
+      "texto_original": "今聖王沒，天下亂，姦言起，君子無勢以臨之，無刑以禁之，故辨說也。實不喻然後命，命不喻然後期，期不喻然後說，說不喻然後辨。故期、命、辨、說也者，用之大晚矣。",
+      "traduccion": null,
+      "notas": "La decadencia actual y el uso tardío de la argumentación."
+    },
+    {
+      "id": 20,
+      "texto_original": "凡語治而待修妄，是名之所不能禁也，其猶積陳糧於無用之倉也，其死也必矣。故應之以當，言之以理，事之以務，執之以情。性之好、惡、喜、怒、哀、樂，謂之情。情而非溢，謂之欲。",
+      "traduccion": null,
+      "notas": "Transición al tema de los Deseos (Yu) y las Emociones."
+    },
+    {
+      "id": 21,
+      "texto_original": "心之所可中理，則欲雖多，奚傷於治！欲不及而不能求，雖寡，奚止於亂！故治亂在於心之所可，亡於情之所欲。不求之其所可求，而求之其所不可求，是之謂以所可受疑所欲。增欲而無損謂之得。",
+      "traduccion": null,
+      "notas": "La gobernanza depende de la mente (Xin), no de la cantidad de deseos."
+    },
+    {
+      "id": 22,
+      "texto_original": "道者，古今之正權也；離道而內自擇，則不知禍福之所託。故道，利之常也；妄，凶之常也。為人主計者，莫如悉導之以道，然後養心；養心之術，莫若載營魄。正名之用，質於後王。",
+      "traduccion": null,
+      "notas": "Conclusión: El Dao como estándar constante y el uso final de la rectificación de nombres."
+    }
+  ],
+  "conceptos_clave": {
+    "性 (Xing)": "Naturaleza innata, lo que se tiene al nacer.",
+    "偽 (Wei)": "Artificio, acción consciente y acumulada que transforma la naturaleza.",
+    "情 (Qing)": "Emociones básicas (amor, odio, alegría, ira) que surgen de la naturaleza.",
+    "慮 (Lü)": "Reflexión o deliberación de la mente sobre las emociones.",
+    "名 (Ming)": "Nombre o concepto lingüístico.",
+    "實 (Shi)": "Realidad sustancial u objeto al que refiere el nombre.",
+    "徵知 (Zhengzhi)": "Verificación cognitiva; la capacidad de la mente de distinguir y confirmar.",
+    "天官 (Tianguan)": "Los órganos sensoriales celestiales (ojos, oídos, etc.)."
+  }
+}
