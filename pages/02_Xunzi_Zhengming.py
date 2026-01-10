@@ -13,34 +13,26 @@ from traducciones import diccionario
 # --- 1. CONFIGURACIÓN INICIAL ---
 st.set_page_config(page_title="Xunzi - Zhengming", page_icon="📜", layout="wide")
 
-# Gestión de Idioma (Sincronizado con app.py mediante session_state)
-if 'lang' not in st.session_state:
-    st.session_state.lang = 'ES'
-    
-lang_code = st.session_state.lang
+# Verificar que el usuario está logueado
+if st.session_state.get("authentication_status") is not True:
+    st.warning("Acceso denegado. Por favor inicia sesión en la página principal.")
+    st.stop()
+
+# Gestión de Idioma
+lang_code = st.session_state.get('lang', 'ES')
 texts = diccionario[lang_code]
 
-# --- 2. CONEXIÓN SEGURA A GEMINI (Secrets) ---
+# --- 2. CONEXIÓN SEGURA A GEMINI ---
 try:
-    # Intenta obtener la clave de los Secrets de Streamlit (Nube)
+    # Intentamos obtener la clave de los Secrets
     api_key = st.secrets["GOOGLE_API_KEY"]
 except Exception:
-    # Fallback para local si usas .env (opcional)
-    try:
-        from dotenv import load_dotenv
-        load_dotenv()
-        api_key = os.getenv("GOOGLE_API_KEY")
-    except:
-        api_key = None
-
-if not api_key:
-    st.error("⚠️ API Key no encontrada. Configura 'GOOGLE_API_KEY' en Streamlit Secrets.")
+    st.error("⚠️ API Key no encontrada en Secrets.")
     st.stop()
 
 genai.configure(api_key=api_key)
 
 # --- 3. CARGA DE DATOS (El JSON de Xunzi) ---
-# Ajusta 'chinese' si tu carpeta dentro de data se llama diferente
 ruta_actual = os.path.dirname(__file__)
 ruta_json = os.path.join(ruta_actual, '..', 'data', 'chinese', 'xunzi_zhengming.json')
 
@@ -48,16 +40,18 @@ try:
     with open(ruta_json, 'r', encoding='utf-8') as f:
         data_xunzi = json.load(f)
 except FileNotFoundError:
-    st.error(f"Error crítico: No se encuentra el archivo en {ruta_json}")
+    st.error(f"Error crítico: No se encuentra el archivo JSON en {ruta_json}")
     st.stop()
 
 # --- 4. INTERFAZ DE USUARIO ---
 st.title(texts["xunzi_titulo"])
 
-# Visualizador del Texto Original (Colapsable)
+# Visualizador del Texto Original
 with st.expander(texts["expander_texto"]):
     for segmento in data_xunzi['corpus']:
-        st.markdown(f"**[{segmento['id']}]** {segmento['texto_original']}")
+        id_seg = segmento.get('id', '?')
+        texto = segmento.get('texto_original', '')
+        st.markdown(f"**[{id_seg}]** {texto}")
 
 # Área de Chat
 st.divider()
@@ -68,8 +62,7 @@ if query:
     with st.chat_message("user"):
         st.write(query)
 
-    # --- 5. LÓGICA RAG (Retrieval Augmented Generation) ---
-    # Convertimos el JSON a texto para dárselo a Gemini
+    # --- 5. LÓGICA RAG ---
     contexto_str = json.dumps(data_xunzi, ensure_ascii=False)
     
     prompt = f"""
@@ -92,7 +85,10 @@ if query:
     
     with st.spinner(texts["analizando"]):
         try:
-            model = genai.GenerativeModel('gemini-1.5-flash')
+            # --- MODELO ACTUALIZADO A 2026 ---
+            # Usamos la versión más eficiente: 2.0 Flash Lite
+            model = genai.GenerativeModel('gemini-2.0-flash-lite')
+            
             response = model.generate_content(prompt)
             respuesta_texto = response.text
             
