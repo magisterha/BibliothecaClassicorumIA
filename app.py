@@ -9,32 +9,38 @@ st.set_page_config(
     layout="wide"
 )
 
-# --- FUNCIÓN PARA CORREGIR EL RECURSION ERROR ---
-def convert_secrets_to_dict(secrets_section):
+# --- FUNCIÓN CRÍTICA DE CONVERSIÓN ---
+def parse_secrets(obj):
     """
-    Convierte el objeto 'Secrets' de Streamlit en un diccionario puro de Python.
-    Esto evita el RecursionError al intentar modificar credenciales.
+    Convierte recursivamente el objeto st.secrets (inmutable) 
+    en un diccionario estándar de Python (mutable).
+    Esto soluciona el error 'Secrets does not support item assignment'.
     """
-    try:
-        # Convertimos recursivamente a diccionario estándar
-        return {k: v for k, v in secrets_section.items()}
-    except Exception:
-        return {}
+    if hasattr(obj, 'items'):
+        return {k: parse_secrets(v) for k, v in obj.items()}
+    elif isinstance(obj, list):
+        return [parse_secrets(i) for i in obj]
+    else:
+        return obj
 
 # 2. INICIALIZACIÓN DEL MODO INVITADO
 if 'guest_credits' not in st.session_state:
-    st.session_state.guest_credits = 20  # Damos 20 interacciones gratis
+    st.session_state.guest_credits = 20
 
 # 3. SISTEMA DE LOGIN / AUTENTICACIÓN
 try:
-    # USAMOS LA FUNCIÓN SEGURA EN LUGAR DE DEEPCOPY
-    credentials = convert_secrets_to_dict(st.secrets['credentials'])
-    cookie = convert_secrets_to_dict(st.secrets['cookie'])
+    # CARGAMOS LOS SECRETOS USANDO LA FUNCIÓN DE LIMPIEZA
+    # Esto crea una copia limpia en memoria que la librería sí puede editar
+    secrets_dict = parse_secrets(st.secrets)
+    
+    credentials = secrets_dict['credentials']
+    cookie = secrets_dict['cookie']
+    
 except Exception as e:
     st.error(f"Error cargando secretos: {e}")
     st.stop()
 
-# Crear el objeto autenticador
+# Crear el objeto autenticador con los datos ya convertidos
 authenticator = stauth.Authenticate(
     credentials,
     cookie['name'],
@@ -45,73 +51,72 @@ authenticator = stauth.Authenticate(
 # Renderizamos widget de Login
 authenticator.login()
 
-# --- LÓGICA HÍBRIDA (LOGIN vs INVITADO) ---
+# --- 4. LÓGICA DE CONTROL DE ACCESO (HÍBRIDO) ---
 
-# Definimos variables de estado para el resto de la app
 usuario_activo = "Invitado"
 es_premium = False
 
-# CASO 1: USUARIO REGISTRADO
+# CASO A: LOGUEADO CORRECTAMENTE
 if st.session_state["authentication_status"] is True:
     usuario_activo = st.session_state['name']
     es_premium = True
     
-    # Barra lateral para usuarios registrados
     with st.sidebar:
-        st.success(f"Sesión iniciada: **{usuario_activo}**")
+        st.success(f"Investigador: **{usuario_activo}**")
         authenticator.logout('Cerrar Sesión', 'sidebar')
 
-# CASO 2: CONTRASEÑA INCORRECTA
+# CASO B: CONTRASEÑA INCORRECTA
 elif st.session_state["authentication_status"] is False:
-    st.error('Usuario o contraseña incorrectos.')
-    # No detenemos la app, dejamos que fluya al modo invitado si quieren,
-    # o pueden reintentar.
+    st.error('Usuario o contraseña incorrectos / Username or password incorrect')
 
-# CASO 3: MODO INVITADO (No logueado o login fallido)
-else:
+# CASO C: NO LOGUEADO (MODO INVITADO)
+elif st.session_state["authentication_status"] is None:
+    # Verificamos si le quedan créditos
     if st.session_state.guest_credits > 0:
         with st.sidebar:
-            st.warning("Modo Invitado")
-            st.metric("Créditos Gratuitos", st.session_state.guest_credits)
-            st.info("Inicia sesión para acceso ilimitado.")
+            st.info(f"👤 Modo Invitado")
+            st.warning(f"Créditos restantes: {st.session_state.guest_credits}")
+            st.markdown("---")
+            st.caption("Inicia sesión para acceso ilimitado.")
     else:
+        # Si no hay créditos y no está logueado -> BLOQUEO TOTAL
         st.error("⛔ Se han agotado tus 20 interacciones gratuitas.")
-        st.info("Por favor, contacta con el administrador para obtener credenciales.")
-        st.stop() # AQUÍ SÍ PARAMOS SI NO HAY CRÉDITOS
+        st.info("Por favor, inicia sesión con una cuenta de investigador.")
+        st.stop()
 
-# Guardamos el estado en la sesión para que las otras páginas lo sepan
+# Guardar estado en sesión para las páginas satélite
 st.session_state['usuario_activo'] = usuario_activo
 st.session_state['es_premium'] = es_premium
 
 # ==============================================================================
-#  INTERFAZ PRINCIPAL (VISIBLE PARA TODOS LOS QUE TENGAN CRÉDITOS)
+#  INTERFAZ PRINCIPAL
 # ==============================================================================
+
+# Selector de Idioma (Seguro)
+if 'lang' not in st.session_state:
+    st.session_state.lang = 'ES'
 
 with st.sidebar:
     st.divider()
-    # Selector de Idioma Global
-    if 'lang' not in st.session_state:
-        st.session_state.lang = 'ES'
-    
     idioma_elegido = st.selectbox(
-        "Idioma / Language", # Simplificado para evitar error de diccionario antes de tiempo
+        "Idioma / Language",
         options=["Español", "繁體中文", "English"],
         index=0
     )
     mapping = {"Español": "ES", "繁體中文": "ZH", "English": "EN"}
     st.session_state.lang = mapping[idioma_elegido]
 
-# Cargar textos
 lang_code = st.session_state.lang
 texts = diccionario[lang_code]
 
+# Contenido
 st.title(texts["titulo_app"])
 st.markdown(f"""
 ### {texts['bienvenida']}
 
-Bienvenido, **{usuario_activo}**.
-
-* **Estado:** {'✅ Acceso Ilimitado' if es_premium else f'⏳ Invitado ({st.session_state.guest_credits} restantes)'}
+**Estado de la Sesión:**
+* Usuario: **{usuario_activo}**
+* Tipo de acceso: **{'🛡️ Ilimitado (Premium)' if es_premium else '⏳ Limitado (Invitado)'}**
 """)
 
-st.info("Sistema conectado a Google Sheets y Gemini 2.0 Flash Lite.")
+st.info("Sistema operativo: Google Sheets Backend + Gemini 2.0 Flash Lite")
