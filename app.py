@@ -1,6 +1,21 @@
+
 import streamlit as st
 import streamlit_authenticator as stauth
-from traducciones import diccionario
+
+# --- BORRAR ESTO DESPUÉS DE OBTENER EL CÓDIGO ---
+# 1. Escribe aquí ABAJO la contraseña que quieres mantener (la tuya)
+tu_password_actual = "ESCRIBE_AQUI_TU_CONTRASEÑA_REAL" 
+
+# 2. Generamos el código secreto
+hash_generado = stauth.Hasher([tu_password_actual]).generate()[0]
+
+# 3. Te lo mostramos en pantalla para que lo copies
+st.write(f"Para mantener tu contraseña '{tu_password_actual}', copia este código:")
+st.code(hash_generado, language="text")
+st.stop()
+# ------------------------------------------------
+
+
 
 # 1. CONFIGURACIÓN DE PÁGINA
 st.set_page_config(
