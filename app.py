@@ -4,7 +4,7 @@ import streamlit_authenticator as stauth
 
 # --- BORRAR ESTO DESPUÉS DE OBTENER EL CÓDIGO ---
 # 1. Escribe aquí ABAJO la contraseña que quieres mantener (la tuya)
-tu_password_actual = "ESCRIBE_AQUI_TU_CONTRASEÑA_REAL" 
+tu_password_actual = "$adad(JKJKU)oooo111OOb44.4441Ju8" 
 
 # 2. Generamos el código secreto
 hash_generado = stauth.Hasher([tu_password_actual]).generate()[0]
