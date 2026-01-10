@@ -6,3 +6,4 @@ openpyxl
 streamlit-authenticator
 streamlit-gsheets
 st-gsheets-connection
+pyyaml
