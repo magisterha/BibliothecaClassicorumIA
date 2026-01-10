@@ -1,10 +1,11 @@
 import streamlit as st
 import streamlit_authenticator as stauth
 import yaml
+import copy  # <--- CRÍTICO: Necesario para copiar los secretos
 from yaml.loader import SafeLoader
 from traducciones import diccionario
 
-# 1. CONFIGURACIÓN DE PÁGINA (Debe ser la primera línea ejecutable de Streamlit)
+# 1. CONFIGURACIÓN DE PÁGINA
 st.set_page_config(
     page_title="Bibliotheca Classicarum IA",
     page_icon="🏛️",
@@ -12,14 +13,20 @@ st.set_page_config(
 )
 
 # 2. SISTEMA DE LOGIN / AUTENTICACIÓN
-# Intentamos cargar credenciales de los Secrets
 try:
-    credentials = dict(st.secrets['credentials'])
-    cookie = dict(st.secrets['cookie'])
+    # --- CORRECCIÓN DE SEGURIDAD ---
+    # Usamos copy.deepcopy() para crear una copia editable y evitar el error
+    # "Secrets does not support item assignment".
+    credentials = copy.deepcopy(dict(st.secrets['credentials']))
+    cookie = copy.deepcopy(dict(st.secrets['cookie']))
 except FileNotFoundError:
     st.error("Error crítico: No se han configurado los Secrets de credenciales.")
     st.stop()
+except KeyError as e:
+    st.error(f"Error en la estructura de Secrets: Falta la clave {e}")
+    st.stop()
 
+# Crear el objeto autenticador con los datos copiados
 authenticator = stauth.Authenticate(
     credentials,
     cookie['name'],
@@ -28,15 +35,15 @@ authenticator = stauth.Authenticate(
 )
 
 # Renderizamos widget de Login
-# El parámetro 'main' lo pone en el centro, 'sidebar' en la barra lateral
 authenticator.login()
 
+# Verificar estado de autenticación
 if st.session_state["authentication_status"] is False:
     st.error('Usuario o contraseña incorrectos')
-    st.stop() # DETIENE LA EJECUCIÓN AQUÍ
+    st.stop()
 elif st.session_state["authentication_status"] is None:
     st.warning('Por favor, inicie sesión para acceder a la Bibliotheca.')
-    st.stop() # DETIENE LA EJECUCIÓN AQUÍ
+    st.stop()
 
 # ==============================================================================
 #  ZONA SEGURA: EL CÓDIGO DE ABAJO SOLO SE EJECUTA SI ESTÁS LOGUEADO
@@ -74,4 +81,4 @@ Selecciona un módulo en la barra lateral (izquierda) para comenzar:
 * **Zona de Usuario:** Para guardar tus notas y ver tu historial.
 """)
 
-st.info("Sistema conectado a Google Sheets y Gemini 1.5 Flash.")
+st.info("Sistema conectado a Google Sheets y Gemini 2.0 Flash Lite.")
