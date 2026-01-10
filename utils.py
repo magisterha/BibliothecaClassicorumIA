@@ -4,25 +4,22 @@ from datetime import datetime
 from streamlit_gsheets import GSheetsConnection
 
 # ==============================================================================
-#  CONFIGURACIÓN MANUAL DEL ENLACE
-#  Pega aquí abajo el enlace completo de tu Google Sheet (dentro de las comillas)
+#  CONFIGURACIÓN MANUAL - PEGA TU ENLACE AQUÍ ABAJO
 # ==============================================================================
 URL_HOJA = "https://docs.google.com/spreadsheets/d/1ggKrCykbta1ef8JiTJsi_BLqkqcGRIDfYtV_DnoNojY/edit?usp=edit" 
 
 
 def guardar_interaccion(query, respuesta, modulo, idioma, tipo="Chat"):
     """
-    Guarda la interacción del usuario en Google Sheets.
-    Usa la URL directa para evitar errores de configuración en Secrets.
+    Guarda la interacción del usuario en Google Sheets usando el nombre estándar 'gsheets'.
     """
     try:
-        # 1. Obtener datos básicos
+        # 1. Datos básicos
         usuario = st.session_state.get('usuario_activo', 'Invitado')
-        fecha_actual = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        fecha = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         
-        # 2. Preparar la nueva fila
         nueva_fila = pd.DataFrame([{
-            "Fecha": fecha_actual,
+            "Fecha": fecha,
             "Usuario": usuario,
             "Modulo": modulo,
             "Idioma": idioma,
@@ -31,34 +28,30 @@ def guardar_interaccion(query, respuesta, modulo, idioma, tipo="Chat"):
             "Respuesta": respuesta
         }])
 
-        # 3. Establecer conexión
-        # Usamos el nombre estándar "gsheets". Si en secrets tienes [connections.gsheets] perfecto,
-        # si no, no importa tanto porque le vamos a forzar la URL en el siguiente paso.
+        # 2. Conexión (ESTA LÍNEA ES LA CLAVE: DEBE DECIR "gsheets")
+        # Esto busca la sección [connections.gsheets] en tus secrets
         conn = st.connection("gsheets", type=GSheetsConnection)
 
-        # 4. Leer datos (Forzando la URL específica)
-        nombre_pestaña = "Logs" # Asegúrate de que tu pestaña se llama así
+        # 3. Leer y Escribir forzando la URL
+        nombre_pestaña = "Logs"
         
         try:
-            # AQUÍ ESTÁ EL CAMBIO CLAVE: Pasamos spreadsheet=URL_HOJA explícitamente
-            datos_existentes = conn.read(spreadsheet=URL_HOJA, worksheet=nombre_pestaña, ttl=0)
+            # Leemos pasando la URL explícitamente
+            datos = conn.read(spreadsheet=URL_HOJA, worksheet=nombre_pestaña, ttl=0)
             
-            if datos_existentes.empty:
+            if datos.empty:
                 df_final = nueva_fila
             else:
-                df_final = pd.concat([datos_existentes, nueva_fila], ignore_index=True)
+                df_final = pd.concat([datos, nueva_fila], ignore_index=True)
                 
         except Exception:
-            # Si falla la lectura (hoja nueva o vacía), creamos el DF inicial
+            # Si falla la lectura (hoja vacía), empezamos de cero
             df_final = nueva_fila
 
-        # 5. Guardar datos (Forzando la URL específica)
+        # Escribimos pasando la URL explícitamente
         conn.update(spreadsheet=URL_HOJA, worksheet=nombre_pestaña, data=df_final)
-        
-        # Debug en consola (solo visible para el desarrollador)
-        print(f"✅ Guardado exitoso para: {usuario}")
+        print(f"✅ Guardado para: {usuario}")
 
     except Exception as e:
-        print(f"❌ Error crítico guardando en Sheets: {e}")
-        # Opcional: Descomentar si quieres ver el error en la web
-        # st.toast(f"Error guardando historial: {e}")
+        print(f"❌ Error al guardar: {e}")
+        # st.toast(f"Error guardando: {e}")
