@@ -1,4 +1,8 @@
 streamlit
 pandas
-python-dotenv
 google-generativeai
+python-dotenv
+openpyxl
+streamlit-authenticator
+streamlit-gsheets
+st-gsheets-connection
