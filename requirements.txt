@@ -4,6 +4,5 @@ google-generativeai
 python-dotenv
 openpyxl
 streamlit-authenticator
-streamlit-gsheets
-pyyaml
-watchdog
+st-gsheets-connection
+PyYAML
